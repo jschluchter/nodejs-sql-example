@@ -17,7 +17,15 @@ const config = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+
+  sql.connect(config).then(() => {
+    return sql.query`select * from samples`
+  }).then(result => {
+    res.json(result).status(200)
+  }).catch(err => {
+    res.json(err).status(500)
+  })
+
 });
 
 module.exports = router;
